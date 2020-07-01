@@ -1,6 +1,6 @@
 import router from './app';
 import { createServer, Server } from 'http';
-import db from './models/index';
+import db from './models';
 
 /**
  * Start Express server.
