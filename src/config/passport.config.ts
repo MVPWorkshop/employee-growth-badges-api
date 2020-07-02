@@ -22,7 +22,7 @@ passport.deserializeUser(async (address: Address, done) => {
 
 async function authenticate(signature: string, payload: string, done: any) {
   try {
-    const address = await AuthService.login(signature, payload);
+    const address = await AuthService.login({signature, payload});
 
     return done(undefined, address);
   } catch (error) {

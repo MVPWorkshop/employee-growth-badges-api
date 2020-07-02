@@ -1,4 +1,4 @@
-import AuthRouteNamespace from '../routes/auth.route.d';
+import AuthServiceNamespace from './auth.service.d';
 import Address from '../models/Address.model';
 import {
   addHexPrefix,
@@ -36,7 +36,7 @@ class AuthService {
     }
   }
 
-  public static async registerAddress(requestBody: AuthRouteNamespace.IRegisterRouteRequestBody): Promise<Address> {
+  public static async registerAddress(requestBody: AuthServiceNamespace.IRegisterData): Promise<Address> {
     const { payload, walletAddress, signature, email, username } = requestBody;
 
     const { address } = this.verifySignature(JSON.stringify(payload), signature);
@@ -54,7 +54,9 @@ class AuthService {
     return dbAddress;
   }
 
-  public static async login(signature: string, payload: string) {
+  public static async login(requestData: AuthServiceNamespace.ILoginData) {
+    const { payload, signature } = requestData;
+
     const stringifiedPayload = Buffer.from(payload, 'base64').toString();
     const parsedPayload = JSON.parse(stringifiedPayload);
 

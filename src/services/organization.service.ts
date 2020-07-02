@@ -3,13 +3,13 @@ import OrganizationServiceNamespace from './organization.service.d';
 
 class OrganizationService {
   public static async createOrganization(data: OrganizationServiceNamespace.ICreateOrganizationData) {
-    Organization.create({
+    return Organization.create({
       name: data.name
     })
   }
 
-  public static async findOrganizationById(id: string) {
-    Organization.findOne({
+  public static async getOrganizationById(id: string) {
+    return Organization.findOne({
       where: {
         id
       }
