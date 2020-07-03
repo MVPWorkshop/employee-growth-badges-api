@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import AuthRoute from './auth.route';
 import { isAuthenticated } from '../middleware/authenticated.middleware';
 import BadgesRoute from './badges.route';
+import OrganizationsRoute from './organizations.route';
 
 const router = Router();
 
@@ -19,5 +20,9 @@ router.post('/login', AuthRoute.login);
 router.post('/badges', isAuthenticated, BadgesRoute.createBadge);
 router.get('/badges', isAuthenticated, BadgesRoute.getBadgeList);
 router.get('/badges/:id', isAuthenticated, BadgesRoute.getBadge);
+
+// Organizations
+router.post('/organizations', isAuthenticated, OrganizationsRoute.createOrganization);
+router.get('/organizations/:id', isAuthenticated, OrganizationsRoute.getOrganization);
 
 export default router;

@@ -24,14 +24,16 @@ class BadgeService {
     });
   }
 
-  public static async getBadgeList(data: BadgesServiceNamespace.IBadgeListData) {
+  public static async getBadgeList(query?: BadgesServiceNamespace.IBadgeListQueries) {
     const queries: DynamicObject = {};
 
-    if (data.organization_id) {
-      queries.organization_id = data.organization_id
-    }
-    if (data.user_id) {
-      // query transfers table
+    if (query) {
+      if (query.organization_id) {
+        queries.organization_id = query.organization_id
+      }
+      if (query.user_id) {
+        // query transfers table
+      }
     }
 
     return Badge.findAll({

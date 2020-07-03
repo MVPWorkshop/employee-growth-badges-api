@@ -4,7 +4,7 @@ declare namespace BadgesServiceNamespace {
   interface ICreateBadgeData extends BadgesRouteNamespace.IBadgesRouteCreateRequestBody {
   }
   
-  interface IBadgeListData extends BadgesRouteNamespace.IBadgeRouteGetListQueries {
+  interface IBadgeListQueries extends BadgesRouteNamespace.IBadgeRouteGetListQueries {
   }
 }
 
