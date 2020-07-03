@@ -7,7 +7,8 @@ import {
   Model,
   PrimaryKey,
   Table,
-  Unique
+  Unique,
+  BelongsTo
 } from 'sequelize-typescript';
 import Organization from './Organization.model';
 import Address from './Address.model';
@@ -40,4 +41,12 @@ export default class AddressToOrganization extends Model<AddressToOrganization> 
   @AllowNull(true)
   @Column({type: DataType.DATE})
   revoked_at: string;
+
+  // relations
+
+  @BelongsTo(() => Address)
+  address: Address;
+
+  @BelongsTo(() => Organization)
+  organization: Organization;
 }

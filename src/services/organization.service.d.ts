@@ -4,8 +4,7 @@ declare namespace OrganizationServiceNamespace {
   export interface ICreateOrganizationData extends OrganizationsRouteNamespace.IOrganizationRouteCreateBody {
   }
 
-  export interface IOrganizationListQueries {
-    collaboratorId?: string
+  export interface IOrganizationListQueries extends OrganizationsRouteNamespace.IGetOrganizationListQueries {
   }
 
 }

@@ -4,6 +4,7 @@ import { isAuthenticated } from '../middleware/authenticated.middleware';
 import BadgesRoute from './badges.route';
 import OrganizationsRoute from './organizations.route';
 import VotesRoute from './votes.route';
+import CollaboratorsRoute from './collaborators.route';
 
 const router = Router();
 
@@ -25,8 +26,14 @@ router.get('/badges/:id', isAuthenticated, BadgesRoute.getBadge);
 // Organizations
 router.post('/organizations', isAuthenticated, OrganizationsRoute.createOrganization);
 router.get('/organizations/:id', isAuthenticated, OrganizationsRoute.getOrganization);
+router.get('/organizations', isAuthenticated, OrganizationsRoute.getOrganizationList);
 
 // Voting
 router.post('/votes', isAuthenticated, VotesRoute.vote);
+
+// Collaborators
+router.post('/collaborators', isAuthenticated, CollaboratorsRoute.createCollaborator);
+router.get('/collaborators', isAuthenticated, CollaboratorsRoute.getCollaboratorList);
+router.delete('/collaborators/:id', isAuthenticated, CollaboratorsRoute.revokeCollaborator);
 
 export default router;

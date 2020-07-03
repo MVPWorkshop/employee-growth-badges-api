@@ -36,7 +36,7 @@ class VotesRoute {
       }
 
       const dbOrganization = await OrganizationService.getOrganizationById(dbBadge.organization_id);
-      const dbCollaborator = await CollaboratorsService.getCollaborator(dbBadge.organization_id, addressId);
+      const dbCollaborator = await CollaboratorsService.getCollaboratorRelationship(dbBadge.organization_id, addressId);
 
       // User not collaborator
       if (!dbCollaborator) {

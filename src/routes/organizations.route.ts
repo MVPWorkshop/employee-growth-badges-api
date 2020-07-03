@@ -45,6 +45,16 @@ class OrganizationsRoute {
       next(error);
     }
   }
+
+  public static async getOrganizationList(request: OrganizationsRouteNamespace.IGetOrganizationListRequest, response: Response, next: NextFunction) {
+    try {
+      const dbOrganizations = await OrganizationService.getOrganizationList(request.query);
+
+      return response.json(dbOrganizations);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default OrganizationsRoute;
