@@ -3,6 +3,7 @@ import AuthRoute from './auth.route';
 import { isAuthenticated } from '../middleware/authenticated.middleware';
 import BadgesRoute from './badges.route';
 import OrganizationsRoute from './organizations.route';
+import VotesRoute from './votes.route';
 
 const router = Router();
 
@@ -24,5 +25,8 @@ router.get('/badges/:id', isAuthenticated, BadgesRoute.getBadge);
 // Organizations
 router.post('/organizations', isAuthenticated, OrganizationsRoute.createOrganization);
 router.get('/organizations/:id', isAuthenticated, OrganizationsRoute.getOrganization);
+
+// Voting
+router.post('/votes', isAuthenticated, VotesRoute.vote);
 
 export default router;

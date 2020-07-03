@@ -40,6 +40,14 @@ class BadgeService {
       where: queries
     });
   }
+
+  public static async updateBadge(badgeId: string, data: BadgesServiceNamespace.IUpdateBadgeData, tx?: Transaction) {
+    const dbBadge = await this.getBadgeById(badgeId);
+
+    return dbBadge.update(data, {
+      transaction: tx
+    });
+  }
 }
 
 export default BadgeService;
