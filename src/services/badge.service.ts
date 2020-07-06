@@ -3,6 +3,8 @@ import { EBadgeStatus } from '../types/badge.types';
 import { Transaction } from 'sequelize';
 import BadgesServiceNamespace from './badge.service.d';
 import { DynamicObject } from '../types/util.types';
+import Address from '../models/Address.model';
+import Organization from '../models/Organization.model';
 
 class BadgeService {
   public static async createBadge(data: BadgesServiceNamespace.ICreateBadgeData, tx?: Transaction) {
@@ -21,6 +23,18 @@ class BadgeService {
       where: {
         id: badgeId
       }
+    });
+  }
+
+  public static async getBadgeByBlockchainId(bcId: string) {
+    return Badge.findOne({
+      where: {
+        token_id_on_chain: bcId
+      },
+      include: [
+        {model: Address},
+        {model: Organization}
+      ]
     });
   }
 

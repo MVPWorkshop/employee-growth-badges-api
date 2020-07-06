@@ -23,6 +23,8 @@ app.use(session(SESSION_OPTIONS));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static('public'));
+
 // API Middlewares
 // apiRouter.use(cors(CORS_OPTIONS));
 // apiRouter.use(cookieParser());

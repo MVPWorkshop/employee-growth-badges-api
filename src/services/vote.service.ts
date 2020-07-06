@@ -2,6 +2,7 @@ import Vote from '../models/Vote.model';
 import VoteServiceNamespace from './vote.service.d';
 import { Transaction } from 'sequelize';
 import { DynamicObject } from '../types/util.types';
+import Address from '../models/Address.model';
 
 class VoteService {
   public static async createVote(addressId: string, data: VoteServiceNamespace.ICreateVoteData, tx: Transaction) {
@@ -40,7 +41,10 @@ class VoteService {
 
     return Vote.findAll({
       where: queries,
-      transaction: tx
+      transaction: tx,
+      include: [
+        {model: Address}
+      ]
     })
   }
 

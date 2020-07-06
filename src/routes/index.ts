@@ -5,6 +5,7 @@ import BadgesRoute from './badges.route';
 import OrganizationsRoute from './organizations.route';
 import VotesRoute from './votes.route';
 import CollaboratorsRoute from './collaborators.route';
+import MetadataRoute from './metadata.route';
 
 const router = Router();
 
@@ -35,5 +36,8 @@ router.post('/votes', isAuthenticated, VotesRoute.vote);
 router.post('/collaborators', isAuthenticated, CollaboratorsRoute.createCollaborator);
 router.get('/collaborators', isAuthenticated, CollaboratorsRoute.getCollaboratorList);
 router.delete('/collaborators/:id', isAuthenticated, CollaboratorsRoute.revokeCollaborator);
+
+// Metadata
+router.get('/metadata/token/:id', MetadataRoute.getTokenMetadata);
 
 export default router;
