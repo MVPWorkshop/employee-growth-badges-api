@@ -46,7 +46,10 @@ class AuthRoute {
 
   public static async logout(request: AuthRouteNamespace.ILoginRouteRequest, response: Response, next: NextFunction) {
     try {
-      request.logOut();
+
+      request.logout();
+
+      return response.status(200).end();
     } catch (error) {
       next(error)
     }
