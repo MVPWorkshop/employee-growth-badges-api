@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import { CorsOptions } from 'cors';
 
 const env = dotenv.config();
 
@@ -35,6 +36,12 @@ const {
   INFURA_HTTP_ENDPOINT
 } = process.env;
 
+const corsOptions: CorsOptions = {
+  'origin': true,
+  'credentials': true,
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+};
+
 const ENV: ApplicationEnv = NODE_ENV as ApplicationEnv || ApplicationEnv.DEVELOPMENT;
 export const CONFIG = {
   NODE_PORT,
@@ -60,5 +67,6 @@ export const CONFIG = {
   ER_CONTRACT_ABI,
   ETHERUM_NETWORK,
   INFURA_WSS_ENDPOINT,
-  INFURA_HTTP_ENDPOINT
+  INFURA_HTTP_ENDPOINT,
+  CORS_OPTIONS: corsOptions
 };

@@ -19,7 +19,7 @@ app.set('host', NODE_HOST);
 
 const apiRouter = Router();
 
-app.use(cors());
+app.use(cors(CONFIG.CORS_OPTIONS));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session(SESSION_OPTIONS));
