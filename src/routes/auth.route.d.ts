@@ -40,9 +40,12 @@ declare namespace AuthRouteNamespace {
    * Response body for
    *  GET /me
    */
+  interface MeOrganizations {
+    organization: Organization
+  }
+  
   interface IMeRouteResponseBody extends Address {
     badges: Badge[];
-    organizations: Organization[];
   }
 }
 

@@ -81,7 +81,7 @@ class AuthRoute {
       const walletAddress = address.address;
 
       // @TODO QUICK FIX FOR ALWAYS NEW /me
-      const organizations = await CollaboratorsService.getAddressesOrganizations(addressId);
+      const organizations = (await CollaboratorsService.getAddressesOrganizations(addressId)).map(org => org.organization);
       const badges = await BadgeService.getBadgesByTransfers({walletAddress});
 
       return response.json({
