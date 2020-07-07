@@ -15,6 +15,7 @@ import { CONFIG } from '../config'
 import { Includeable } from 'sequelize';
 import Badge from '../models/Badge.model';
 import Organization from '../models/Organization.model';
+import BadgeService from './badge.service';
 
 class AuthService {
 
@@ -39,7 +40,7 @@ class AuthService {
     }
   }
 
-  public static async registerAddress(requestBody: AuthServiceNamespace.IRegisterData): Promise<Address> {
+  public static async registerAddress(requestBody: AuthServiceNamespace.IRegisterData) {
     const { payload, walletAddress, signature, email, username } = requestBody;
 
     const { address } = this.verifySignature(JSON.stringify(payload), signature);
@@ -78,7 +79,6 @@ class AuthService {
     const { address } = this.verifySignature(stringifiedPayload, signature);
 
     const includeModels: Includeable[] = [
-      {model: Badge},
       {
         model: Organization,
         through: {
@@ -95,7 +95,12 @@ class AuthService {
       throw new NotFoundError();
     }
 
-    return dbAddress;
+    const badges = await BadgeService.getBadgesByTransfers({walletAddress: dbAddress.address});
+
+    return {
+      ...dbAddress.toJSON(),
+      badges
+    }
   }
 }
 

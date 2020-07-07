@@ -5,19 +5,30 @@ import AuthService from '../services/auth.service';
 import passport from 'passport';
 import Address from '../models/Address.model';
 import { AuthorizationError } from '../utils/errors.util';
+import BadgeService from '../services/badge.service';
 
 class AuthRoute {
+
   public static async register(request: AuthRouteNamespace.IRegisterRouteRequest, response: Response, next: NextFunction) {
     try {
-      const address = await AuthService.registerAddress(request.body);
+      // @TODO Refactor, duplicated code from login
+      const dbAddress = await AuthService.registerAddress(request.body);
+      const organizations: any[] = [];
+      const badges = await BadgeService.getBadgesByTransfers({
+        walletAddress: dbAddress.address
+      });
+      const user = {
+        ...dbAddress.toJSON(),
+        organizations,
+        badges
+      };
 
-      request.logIn(address, (err) => {
+      request.logIn(user, (err) => {
         if (err) {
           next(err);
         }
 
-        passport.authenticate('local');
-        return response.status(200).json(address);
+        return response.status(200).json(user);
       })
 
     } catch (error) {
@@ -64,6 +75,7 @@ class AuthRoute {
 
   public static async me(request: AuthRouteNamespace.ILoginRouteRequest, response: Response, next: NextFunction) {
     try {
+      // @TODO not updated when for instance banned from org
       return response.json(request.user)
     } catch (error) {
       next(error)
