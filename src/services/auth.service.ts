@@ -12,6 +12,9 @@ import { AuthorizationError, ConflictError, InvalidRequestError, NotFoundError }
 import AddressService from './address.service';
 import moment from 'moment';
 import { CONFIG } from '../config'
+import { Includeable } from 'sequelize';
+import Badge from '../models/Badge.model';
+import Organization from '../models/Organization.model';
 
 class AuthService {
 
@@ -40,7 +43,7 @@ class AuthService {
     const { payload, walletAddress, signature, email, username } = requestBody;
 
     const { address } = this.verifySignature(JSON.stringify(payload), signature);
-console.log(address)
+
     if (address.toLowerCase() !== walletAddress.toLowerCase()) {
       throw new InvalidRequestError('Signature and request wallet addresses do not match');
     }
@@ -73,13 +76,24 @@ console.log(address)
     }
 
     const { address } = this.verifySignature(stringifiedPayload, signature);
-console.log(address)
-    const dbAddress = await AddressService.getAddressByWalletAddress(address);
+
+    const includeModels: Includeable[] = [
+      {model: Badge},
+      {
+        model: Organization,
+        through: {
+          where: {
+            revoked: false
+          }
+        }
+      }
+    ];
+
+    const dbAddress = await AddressService.getAddressByWalletAddress(address, includeModels);
 
     if (!dbAddress) {
       throw new NotFoundError();
     }
-    console.log(dbAddress)
 
     return dbAddress;
   }

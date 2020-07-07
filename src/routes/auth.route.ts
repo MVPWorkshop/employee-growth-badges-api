@@ -9,9 +9,9 @@ import { AuthorizationError } from '../utils/errors.util';
 class AuthRoute {
   public static async register(request: AuthRouteNamespace.IRegisterRouteRequest, response: Response, next: NextFunction) {
     try {
-      await AuthService.registerAddress(request.body);
+      const address = await AuthService.registerAddress(request.body);
 
-      return response.status(200).json();
+      return response.status(200).json(address);
 
     } catch (error) {
       return next(error);
@@ -35,13 +35,28 @@ class AuthRoute {
             next(err);
           }
 
-          return response.json(user);
+          return response.status(200).json(user);
         })
       })(request, response, next);
 
     } catch (error) {
-      console.log(error);
       return next(error);
+    }
+  }
+
+  public static async logout(request: AuthRouteNamespace.ILoginRouteRequest, response: Response, next: NextFunction) {
+    try {
+      request.logOut();
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public static async me(request: AuthRouteNamespace.ILoginRouteRequest, response: Response, next: NextFunction) {
+    try {
+      return response.json(request.user)
+    } catch (error) {
+      next(error)
     }
   }
 }

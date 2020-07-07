@@ -1,5 +1,7 @@
 import Address from '../models/Address.model';
 import AddressServiceNamespace from './address.service.d';
+import { Includeable } from 'sequelize';
+
 class AddressService {
 
   public static async createAddress(data: AddressServiceNamespace.ICreateAddressData) {
@@ -15,19 +17,21 @@ class AddressService {
     });
   }
 
-  public static async getAddressById(id: string) {
+  public static async getAddressById(id: string, include?: Includeable[]) {
     return Address.findOne({
       where: {
         id
-      }
+      },
+      include
     })
   }
 
-  public static async getAddressByWalletAddress(walletAddress: string) {
+  public static async getAddressByWalletAddress(walletAddress: string, include?: Includeable[]) {
     return Address.findOne({
       where: {
         address: walletAddress
-      }
+      },
+      include
     })
   }
 }

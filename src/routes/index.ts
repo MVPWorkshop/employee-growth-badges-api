@@ -18,6 +18,8 @@ router.get('/status', async (request: Request, response: Response) => {
 // Authentication
 router.post('/register', AuthRoute.register);
 router.post('/login', AuthRoute.login);
+router.post('/logout', isAuthenticated, AuthRoute.logout);
+router.get('/me', isAuthenticated, AuthRoute.me);
 
 // Badges
 router.post('/badges', isAuthenticated, BadgesRoute.createBadge);
