@@ -11,7 +11,13 @@ class AuthRoute {
     try {
       const address = await AuthService.registerAddress(request.body);
 
-      return response.status(200).json(address);
+      request.logIn(address, (err) => {
+        if (err) {
+          next(err);
+        }
+
+        return response.status(200).json(address);
+      })
 
     } catch (error) {
       return next(error);
