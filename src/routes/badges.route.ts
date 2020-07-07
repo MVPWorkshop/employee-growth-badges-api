@@ -1,9 +1,12 @@
 import BadgesRouteNamespace from './badges.route.d';
-import { NextFunction, Response, Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import OrganizationService from '../services/organization.service';
-import { InvalidRequestError, NotFoundError } from '../utils/errors.util';
+import { AuthorizationError, InvalidRequestError, NotFoundError } from '../utils/errors.util';
 import AddressService from '../services/address.service';
 import BadgeService from '../services/badge.service';
+import { EBadgeStatus } from '../types/badge.types';
+import Organization from '../models/Organization.model';
+import Address from '../models/Address.model';
 
 class BadgesRoute {
   public static async createBadge(request: BadgesRouteNamespace.IBadgesRouteCreateRequest, response: Response, next: NextFunction) {
@@ -77,6 +80,42 @@ class BadgesRoute {
 
     } catch (error) {
       next(error);
+    }
+  }
+
+  public static async markBadgePending(request: BadgesRouteNamespace.IBadgesRouteGetListRequest, response: Response, next: NextFunction) {
+    try {
+      const badgeId = request.params.id;
+
+      const dbBadge = await BadgeService.getBadgeById(badgeId, [
+        {
+          model: Organization,
+          include: [
+            {model: Address}
+          ]
+        }
+      ]);
+
+      if (!dbBadge) {
+        throw new NotFoundError('Badge not found');
+      }
+
+      if (dbBadge.status !== EBadgeStatus.VOTE_SUCCESSFUL) {
+        throw new InvalidRequestError("This badge can't be marked as pending")
+      }
+
+      if (!dbBadge.organization.addresses.some(address => address.id === (request.user as Address).id)) {
+        throw new AuthorizationError("You aren't authorized to perform this action");
+      }
+
+      await dbBadge.update({
+        status: EBadgeStatus.PENDING
+      });
+
+      return response.json(dbBadge);
+
+    } catch (error) {
+      next(error)
     }
   }
 }

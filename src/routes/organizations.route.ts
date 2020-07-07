@@ -4,7 +4,7 @@ import OrganizationsRouteNamespace from './organizations.route.d';
 import Database from '../models';
 import CollaboratorsService from '../services/collaborators.service';
 import Address from '../models/Address.model';
-import { ConflictError, NotFoundError } from '../utils/errors.util';
+import { NotFoundError } from '../utils/errors.util';
 
 class OrganizationsRoute {
   public static async createOrganization(request: OrganizationsRouteNamespace.IOrganizationRouteCreateRequest, response: Response, next: NextFunction) {

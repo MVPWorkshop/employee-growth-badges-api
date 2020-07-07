@@ -18,11 +18,11 @@ class CollaboratorsRoute {
 
       const user = (request.user as Address);
 
-      if (address === user.address) {
+      if (address.toLowerCase() === user.address) {
         throw new InvalidRequestError("You can't register yourself as collaborator");
       }
 
-      const dbAddress = await AddressService.getAddressByWalletAddress(address);
+      const dbAddress = await AddressService.getAddressByWalletAddress(address.toLowerCase());
       if (!dbAddress) {
         throw new InvalidRequestError("Address hasn't been registered on the platform");
       }

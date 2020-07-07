@@ -26,6 +26,7 @@ router.get('/me', isAuthenticated, AuthRoute.me);
 router.post('/badges', isAuthenticated, BadgesRoute.createBadge);
 router.get('/badges', isAuthenticated, BadgesRoute.getBadgeList);
 router.get('/badges/:id', isAuthenticated, BadgesRoute.getBadge);
+router.put('/badges/:id', isAuthenticated, BadgesRoute.markBadgePending);
 
 // Organizations
 router.post('/organizations', isAuthenticated, OrganizationsRoute.createOrganization);

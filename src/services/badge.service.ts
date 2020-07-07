@@ -1,6 +1,6 @@
 import Badge from '../models/Badge.model';
 import { EBadgeStatus } from '../types/badge.types';
-import { Transaction, QueryTypes } from 'sequelize';
+import { Transaction, QueryTypes, Includeable } from 'sequelize';
 import BadgesServiceNamespace from './badge.service.d';
 import { DynamicObject } from '../types/util.types';
 import Address from '../models/Address.model';
@@ -12,18 +12,19 @@ class BadgeService {
     return Badge.create({
       organization_id: data.organizationId,
       creator_address_id: data.creatorAddressId,
-      created_for_address: data.createdForAddress,
+      created_for_address: data.createdForAddress.toLowerCase(),
       special_note: data.specialNote,
       badge_type: data.badgeType,
       status: EBadgeStatus.VOTING
     }, {transaction: tx});
   }
 
-  public static async getBadgeById(badgeId: string) {
+  public static async getBadgeById(badgeId: string, include?: Includeable[]) {
     return Badge.findOne({
       where: {
         id: badgeId
-      }
+      },
+      include
     });
   }
 
