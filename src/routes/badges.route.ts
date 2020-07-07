@@ -56,7 +56,22 @@ class BadgesRoute {
         user_id
       } = request.query;
 
-      const dbBadges = await BadgeService.getBadgeList({organization_id});
+      let dbBadges: any;
+      if (user_id) {
+        // @TODO This whole thing is really inefficient
+        const dbAddress = await AddressService.getAddressById(user_id);
+
+        if (!dbAddress) {
+          throw new InvalidRequestError('User id query param invalid')
+        }
+
+        dbBadges = await BadgeService.getBadgesByTransfers({
+          walletAddress: dbAddress.address,
+          organizationId: organization_id
+        });
+      } else {
+        dbBadges = await BadgeService.getBadgeList({organization_id});
+      }
 
       return response.json(dbBadges);
 

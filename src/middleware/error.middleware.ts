@@ -11,7 +11,7 @@ export async function error(error: Error, request: Request, response: Response, 
 
   let status: number;
   let message: string;
-
+console.log(error)
   if (error instanceof ConflictError) {
     status = 409;
     message = error.message || 'Conflict'

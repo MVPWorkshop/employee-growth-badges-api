@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import Badge from '../models/Badge.model';
 import Organization from '../models/Organization.model';
+import Address from '../models/Address.model';
 
 declare namespace AuthRouteNamespace {
 
@@ -39,10 +40,7 @@ declare namespace AuthRouteNamespace {
    * Response body for
    *  GET /me
    */
-  interface IMeRouteResponseBody {
-    id: string;
-    username?: string;
-    email?: string;
+  interface IMeRouteResponseBody extends Address {
     badges: Badge[];
     organizations: Organization[];
   }

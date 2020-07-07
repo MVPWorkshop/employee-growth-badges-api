@@ -41,7 +41,7 @@ export default class Address extends Model<Address> {
   email: string;
 
   @HasMany(() => Badge)
-  badges: Badge[];
+  created_badges: Badge[];
 
   @BelongsToMany(() => Organization, () => AddressToOrganization)
   organizations: Organization[];

@@ -6,6 +6,7 @@ import OrganizationsRoute from './organizations.route';
 import VotesRoute from './votes.route';
 import CollaboratorsRoute from './collaborators.route';
 import TokenRoute from './token.route';
+import ScoreboardRoute from './scoreboard.route';
 
 const router = Router();
 
@@ -42,5 +43,8 @@ router.delete('/collaborators/:id', isAuthenticated, CollaboratorsRoute.revokeCo
 // Token details
 router.get('/metadata/token/:id', TokenRoute.getTokenMetadata);
 router.get('/tokens/contract', TokenRoute.getTokenContractData);
+
+// Scoreboard
+router.get('/scoreboard', isAuthenticated, ScoreboardRoute.organizationScoreboard);
 
 export default router;

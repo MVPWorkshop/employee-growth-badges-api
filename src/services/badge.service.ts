@@ -1,10 +1,11 @@
 import Badge from '../models/Badge.model';
 import { EBadgeStatus } from '../types/badge.types';
-import { Transaction } from 'sequelize';
+import { Transaction, QueryTypes } from 'sequelize';
 import BadgesServiceNamespace from './badge.service.d';
 import { DynamicObject } from '../types/util.types';
 import Address from '../models/Address.model';
 import Organization from '../models/Organization.model';
+import Database from '../models';
 
 class BadgeService {
   public static async createBadge(data: BadgesServiceNamespace.ICreateBadgeData, tx?: Transaction) {
@@ -45,13 +46,45 @@ class BadgeService {
       if (query.organization_id) {
         queries.organization_id = query.organization_id
       }
-      if (query.user_id) {
-        // query transfers table
-      }
     }
 
     return Badge.findAll({
       where: queries
+    });
+  }
+
+  public static async getBadgesByTransfers(data: BadgesServiceNamespace.IBadgesOfOwnerListQueries) {
+
+    let sql = `
+    SELECT DISTINCT ON ("token_id_on_chain")
+      "transfers"."token_id_on_chain", 
+      "transfers"."address_to" as "owner_address",
+      "badges"."id", 
+      "badges"."organization_id",
+      "badges"."creator_address_id", 
+      "badges"."created_for_address", 
+      "badges"."special_note",
+      "badges"."badge_type",
+      "badges"."status",
+      "badges"."created_at",
+      "badges"."updated_at"
+    FROM "transfers" JOIN "badges"
+    ON "transfers"."token_id_on_chain" = "badges"."token_id_on_chain"
+    `;
+
+    if (data.walletAddress) {
+      sql += 'WHERE "transfers"."address_to" LIKE :walletAddress\n';
+    }
+    if (data.organizationId) {
+      sql += `${data.walletAddress ? 'AND' : 'WHERE'} "badges"."organization_id" = :organizationId`;
+    }
+
+    return Database.query<BadgesServiceNamespace.IBadgesOfOwnerQuery>(sql, {
+      replacements: {
+        walletAddress: data.walletAddress,
+        organizationId: data.organizationId
+      },
+      type: QueryTypes.SELECT
     });
   }
 
