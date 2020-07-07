@@ -6,6 +6,7 @@ import passport from 'passport';
 import Address from '../models/Address.model';
 import { AuthorizationError } from '../utils/errors.util';
 import BadgeService from '../services/badge.service';
+import CollaboratorsService from '../services/collaborators.service';
 
 class AuthRoute {
 
@@ -75,8 +76,19 @@ class AuthRoute {
 
   public static async me(request: AuthRouteNamespace.ILoginRouteRequest, response: Response, next: NextFunction) {
     try {
-      // @TODO not updated when for instance banned from org
-      return response.json(request.user)
+      const address = request.user as Address;
+      const addressId = address.id;
+      const walletAddress = address.address;
+
+      // @TODO QUICK FIX FOR ALWAYS NEW /me
+      const organizations = await CollaboratorsService.getAddressesOrganizations(addressId);
+      const badges = await BadgeService.getBadgesByTransfers({walletAddress});
+
+      return response.json({
+        ...address,
+        organizations,
+        badges
+      })
     } catch (error) {
       next(error)
     }

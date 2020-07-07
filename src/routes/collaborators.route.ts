@@ -93,6 +93,12 @@ class CollaboratorsRoute {
         throw new InvalidRequestError("Provided id isn't a collaborator")
       }
 
+      const allOrganizationCollaborators = await CollaboratorsService.getOrganizationCollaborators(organizationId);
+
+      if (allOrganizationCollaborators.length === 1) {
+        throw new AuthorizationError("You can't remove the last collaborator");
+      }
+
       await dbCollaborator.update({
         revoked: true,
         revoked_at: moment().toDate()
