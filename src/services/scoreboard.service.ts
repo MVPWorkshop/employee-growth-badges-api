@@ -37,7 +37,7 @@ class ScoreboardService {
     });
 
     scoreboard.sort((a, b) => {
-      return a.badges.length > b.badges.length ? 1 : 0
+      return a.badges.length < b.badges.length ? 1 : -1
     });
 
     return scoreboard;
