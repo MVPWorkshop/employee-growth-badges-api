@@ -24,6 +24,11 @@ export default class Transfer extends Model<Transfer> {
   id: string;
 
   @AllowNull(false)
+  @Unique
+  @Column
+  tx_hash: string;
+
+  @AllowNull(false)
   @Column
   address_from: string;
 
@@ -34,11 +39,4 @@ export default class Transfer extends Model<Transfer> {
   @AllowNull(false)
   @Column
   token_id_on_chain: string;
-
-  @ForeignKey(() => Badge)
-  @Column({type: DataType.UUIDV4})
-  badge_id: string;
-
-  @BelongsTo(() => Badge)
-  badge: Badge;
 }

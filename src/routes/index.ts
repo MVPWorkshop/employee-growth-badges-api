@@ -5,7 +5,7 @@ import BadgesRoute from './badges.route';
 import OrganizationsRoute from './organizations.route';
 import VotesRoute from './votes.route';
 import CollaboratorsRoute from './collaborators.route';
-import MetadataRoute from './metadata.route';
+import TokenRoute from './token.route';
 
 const router = Router();
 
@@ -37,7 +37,8 @@ router.post('/collaborators', isAuthenticated, CollaboratorsRoute.createCollabor
 router.get('/collaborators', isAuthenticated, CollaboratorsRoute.getCollaboratorList);
 router.delete('/collaborators/:id', isAuthenticated, CollaboratorsRoute.revokeCollaborator);
 
-// Metadata
-router.get('/metadata/token/:id', MetadataRoute.getTokenMetadata);
+// Token details
+router.get('/metadata/token/:id', TokenRoute.getTokenMetadata);
+router.get('/tokens/contract', TokenRoute.getTokenContractData);
 
 export default router;

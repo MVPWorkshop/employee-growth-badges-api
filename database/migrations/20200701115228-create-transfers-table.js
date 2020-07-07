@@ -12,6 +12,11 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      tx_hash: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+      },
       address_from: {
         type: Sequelize.STRING,
         allowNull: false
@@ -23,16 +28,6 @@ module.exports = {
       token_id_on_chain: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      badge_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'badges',
-          },
-          key: 'id'
-        }
       },
       created_at: {
         type: Sequelize.DATE,

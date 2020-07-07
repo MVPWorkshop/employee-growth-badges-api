@@ -1,12 +1,12 @@
 import { EBadgeType } from '../types/badge.types';
 
-declare namespace MetadataRouteNamespace {
+declare namespace TokenRouteNamespace {
 
   /*============GET ONE ITEM===============*/
 
   /**
    * Response body for
-   *  GET /metadata/token/:id
+   *  GET /tokens/:id/metadata
    */
   interface IGetTokenMetadataRouteBody {
     badgeType: EBadgeType;
@@ -19,6 +19,15 @@ declare namespace MetadataRouteNamespace {
     creationDate: string;
     confirmedBy: string[];
   }
+
+  /**
+   * Response body for
+   *  GET /tokens/contract
+   */
+  interface IGetTokenContractRouteBody {
+    address: string;
+    abi: string;
+  }
 }
 
-export default MetadataRouteNamespace;
+export default TokenRouteNamespace;

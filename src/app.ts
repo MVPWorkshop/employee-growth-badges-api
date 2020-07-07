@@ -7,6 +7,8 @@ import { CONFIG } from './config';
 import session from 'express-session';
 import { SESSION_OPTIONS } from './config/session.config';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import ContractService from './services/contract.service';
 
 const {NODE_PORT, NODE_HOST} = CONFIG;
 
@@ -17,6 +19,7 @@ app.set('host', NODE_HOST);
 
 const apiRouter = Router();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session(SESSION_OPTIONS));
@@ -49,5 +52,7 @@ app.use(error);
 app.use('*', (request: Request, response: Response) => {
   return response.status(404).json({message: 'Not Found'});
 });
+
+ContractService.setupWatcher();
 
 export default app;

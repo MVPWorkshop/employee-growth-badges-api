@@ -3,10 +3,15 @@ import AddressServiceNamespace from './address.service.d';
 class AddressService {
 
   public static async createAddress(data: AddressServiceNamespace.ICreateAddressData) {
-    return Address.create({
-      address: data.address,
-      username: data.username,
-      email: data.email
+    return Address.findOrCreate({
+      where: {
+        address: data.address
+      },
+      defaults: {
+        address: data.address,
+        username: data.username,
+        email: data.email
+      }
     });
   }
 

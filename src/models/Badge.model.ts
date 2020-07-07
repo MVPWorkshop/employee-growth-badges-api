@@ -64,7 +64,4 @@ export default class Badge extends Model<Badge> {
 
   @HasMany(() => Vote)
   votes: Vote[];
-
-  @HasMany(() => Transfer)
-  transfers: Transfer[];
 }

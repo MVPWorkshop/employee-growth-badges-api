@@ -8,7 +8,7 @@ import {
   isValidSignature,
   pubToAddress
 } from 'ethereumjs-util';
-import { AuthorizationError, InvalidRequestError, NotFoundError } from '../utils/errors.util';
+import { AuthorizationError, ConflictError, InvalidRequestError, NotFoundError } from '../utils/errors.util';
 import AddressService from './address.service';
 import moment from 'moment';
 import { CONFIG } from '../config'
@@ -40,16 +40,20 @@ class AuthService {
     const { payload, walletAddress, signature, email, username } = requestBody;
 
     const { address } = this.verifySignature(JSON.stringify(payload), signature);
-
+console.log(address)
     if (address.toLowerCase() !== walletAddress.toLowerCase()) {
       throw new InvalidRequestError('Signature and request wallet addresses do not match');
     }
 
-    const dbAddress = AddressService.createAddress({
+    const [dbAddress, created] = await AddressService.createAddress({
       address,
       email,
       username
     });
+
+    if (!created) {
+      throw new ConflictError();
+    }
 
     return dbAddress;
   }
@@ -69,12 +73,13 @@ class AuthService {
     }
 
     const { address } = this.verifySignature(stringifiedPayload, signature);
-
-    const dbAddress = AddressService.getAddressByWalletAddress(address);
+console.log(address)
+    const dbAddress = await AddressService.getAddressByWalletAddress(address);
 
     if (!dbAddress) {
       throw new NotFoundError();
     }
+    console.log(dbAddress)
 
     return dbAddress;
   }
