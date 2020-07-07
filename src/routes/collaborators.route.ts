@@ -45,7 +45,7 @@ class CollaboratorsRoute {
       if (!created) {
         if (dbCollaborator.revoked === true) {
           dbCollaborator.update({
-            revoked: true,
+            revoked: false,
             revoked_at: null
           })
         } else {
