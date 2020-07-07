@@ -16,6 +16,7 @@ class AuthRoute {
           next(err);
         }
 
+        passport.authenticate('local');
         return response.status(200).json(address);
       })
 
