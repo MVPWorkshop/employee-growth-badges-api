@@ -78,7 +78,7 @@ class AuthRoute {
     try {
       const address = request.user as Address;
       const addressId = address.id;
-      const walletAddress = address.address;
+      const walletAddress = address.address.toLowerCase();
 
       // @TODO QUICK FIX FOR ALWAYS NEW /me
       const organizations = (await CollaboratorsService.getAddressesOrganizations(addressId)).map(org => org.organization);

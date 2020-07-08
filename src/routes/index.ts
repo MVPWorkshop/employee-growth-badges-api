@@ -7,6 +7,7 @@ import VotesRoute from './votes.route';
 import CollaboratorsRoute from './collaborators.route';
 import TokenRoute from './token.route';
 import ScoreboardRoute from './scoreboard.route';
+import AddressRoute from './address.route';
 
 const router = Router();
 
@@ -21,6 +22,9 @@ router.post('/register', AuthRoute.register);
 router.post('/login', AuthRoute.login);
 router.post('/logout', isAuthenticated, AuthRoute.logout);
 router.get('/me', isAuthenticated, AuthRoute.me);
+
+// Address
+router.get('/addresses/:id', isAuthenticated, AddressRoute.getAddress);
 
 // Badges
 router.post('/badges', isAuthenticated, BadgesRoute.createBadge);

@@ -3,7 +3,8 @@ import { EBadgeStatus, EBadgeType } from '../types/badge.types';
 import Badge from '../models/Badge.model';
 
 declare namespace BadgesServiceNamespace {
-  interface ICreateBadgeData extends BadgesRouteNamespace.IBadgesRouteCreateRequestBody { 
+  interface ICreateBadgeData extends BadgesRouteNamespace.IBadgesRouteCreateRequestBody {
+    creatorAddressId: string;
   }
   
   interface IUpdateBadgeData {

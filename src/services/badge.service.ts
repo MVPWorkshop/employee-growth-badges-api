@@ -74,7 +74,7 @@ class BadgeService {
     `;
 
     if (data.walletAddress) {
-      sql += 'WHERE "transfers"."address_to" LIKE :walletAddress\n';
+      sql += 'WHERE LOWER("transfers"."address_to") LIKE :walletAddress\n';
     }
     if (data.organizationId) {
       sql += `${data.walletAddress ? 'AND' : 'WHERE'} "badges"."organization_id" = :organizationId`;

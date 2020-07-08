@@ -12,9 +12,10 @@ class BadgesRoute {
   public static async createBadge(request: BadgesRouteNamespace.IBadgesRouteCreateRequest, response: Response, next: NextFunction) {
     try {
       const {
-        organizationId,
-        creatorAddressId
+        organizationId
       } = request.body;
+
+      const creatorAddressId = (request.user as Address).id;
 
       const dbOrganization = await OrganizationService.getOrganizationById(organizationId);
 
@@ -28,7 +29,10 @@ class BadgesRoute {
         throw new InvalidRequestError("Creator address id is invalid");
       }
 
-      const dbBadge = await BadgeService.createBadge(request.body);
+      const dbBadge = await BadgeService.createBadge({
+        ...request.body,
+        creatorAddressId
+      });
 
       return response.json(dbBadge);
 

@@ -6,7 +6,6 @@ declare namespace BadgesRouteNamespace {
   interface IBadgesRouteCreateRequestBody {
     badgeType: EBadgeType;
     organizationId: string;
-    creatorAddressId: string;
     createdForAddress: string;
     specialNote: string;
   }
