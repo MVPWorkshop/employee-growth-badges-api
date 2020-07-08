@@ -50,7 +50,10 @@ class BadgeService {
     }
 
     return Badge.findAll({
-      where: queries
+      where: queries,
+      order: [
+        ['updatedAt', 'DESC']
+      ]
     });
   }
 
